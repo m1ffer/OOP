@@ -225,34 +225,6 @@ public abstract class Vehicle extends ImageObject {
     // ==============================
 
     /**
-     * Проверяет, что значение не превышает заданный максимум.
-     *
-     * @param value   проверяемое значение
-     * @param max     максимально допустимое значение (включительно)
-     * @param message сообщение об ошибке
-     * @return value, если оно ≤ max
-     * @throws IllegalArgumentException если value > max
-     */
-    public static double validateMax(double value, double max, String message) {
-        if (value > max)
-            throw new IllegalArgumentException(message);
-        return value;
-    }
-
-    /**
-     * Перегрузка {@link #validateMax(double, double, String)} для целых чисел.
-     *
-     * @param value   проверяемое значение
-     * @param max     максимально допустимое значение (включительно)
-     * @param message сообщение об ошибке
-     * @return value, если оно ≤ max
-     * @throws IllegalArgumentException если value > max
-     */
-    public static int validateMax(int value, int max, String message) {
-        return (int) validateMax((double) value, (double) max, message);
-    }
-
-    /**
      * Проверяет, что коэффициент уменьшения скорости находится в диапазоне [0,1].
      *
      * @param reduction проверяемый коэффициент
@@ -314,5 +286,157 @@ public abstract class Vehicle extends ImageObject {
                         + loadReductionFunction.apply(loadWeight),
                 "Суммарный коэффициент уменьшения должен быть в [0,1]"
         );
+    }
+
+    // =======================
+    // ===== КОНФИГИ =========
+    // =======================
+
+    /**
+     * Конфигурация отображения объекта на сцене.
+     *
+     * <p>Содержит параметры, необходимые для:
+     * <ul>
+     *     <li>позиционирования объекта</li>
+     *     <li>задания габаритов</li>
+     *     <li>задания размеров изображения</li>
+     *     <li>передачи размеров канвы</li>
+     * </ul>
+     *
+     * <p>Все размеры должны быть строго положительными.</p>
+     */
+    public record ImageConf(Image image,
+                            double startX,
+                            double startY,
+                            double width,
+                            double height,
+                            double canvasWidth,
+                            double canvasHeight,
+                            double imageWidth,
+                            double imageHeight) {
+
+        /**
+         * Canonical-конструктор с валидацией параметров.
+         */
+        public ImageConf {
+
+            // Проверка изображения
+            Objects.requireNonNull(image,
+                    "Изображение не должно быть null.");
+
+            // Проверка габаритов объекта
+            validatePositive(width,
+                    "Ширина объекта должна быть больше 0.");
+            validatePositive(height,
+                    "Высота объекта должна быть больше 0.");
+
+            // Проверка размеров канвы
+            validatePositive(canvasWidth,
+                    "Ширина канвы должна быть больше 0.");
+            validatePositive(canvasHeight,
+                    "Высота канвы должна быть больше 0.");
+
+            // Проверка размеров изображения
+            validatePositive(imageWidth,
+                    "Ширина изображения должна быть больше 0.");
+            validatePositive(imageHeight,
+                    "Высота изображения должна быть больше 0.");
+        }
+    }
+
+    /**
+     * Конфигурация функций движения объекта.
+     *
+     * <p>Каждая функция принимает время жизни объекта (в секундах)
+     * и возвращает координату соответствующей оси.</p>
+     */
+    public record MotionConf(Function<Double, Double> xMotion,
+                             Function<Double, Double> yMotion) {
+
+        /**
+         * Canonical-конструктор с проверкой функций.
+         */
+        public MotionConf {
+
+            // Проверка функции движения по X
+            Objects.requireNonNull(xMotion,
+                    "Функция движения по оси X не должна быть null.");
+
+            // Проверка функции движения по Y
+            Objects.requireNonNull(yMotion,
+                    "Функция движения по оси Y не должна быть null.");
+        }
+    }
+
+    /**
+     * Конфигурация загрузки транспортного средства.
+     *
+     * <p>Содержит ограничения и текущие значения:
+     * <ul>
+     *     <li>Количество пассажиров</li>
+     *     <li>Вес груза</li>
+     * </ul>
+     *
+     * <p>Значения не могут быть отрицательными,
+     * а текущие значения не должны превышать максимальные.</p>
+     */
+    public record LoadConf(int maxPeopleCNT,
+                           int peopleCNT,
+                           int loadCapacity,
+                           int loadWeight) {
+
+        /**
+         * Canonical-конструктор с полной валидацией.
+         */
+        public LoadConf {
+
+            // Проверка ограничений по пассажирам
+            validateNonNegative(maxPeopleCNT,
+                    "Максимальное количество пассажиров не может быть отрицательным.");
+
+            validateNonNegative(peopleCNT,
+                    "Количество пассажиров не может быть отрицательным.");
+
+            validateMax(peopleCNT, maxPeopleCNT,
+                    "Количество пассажиров превышает допустимый максимум.");
+
+            // Проверка ограничений по грузу
+            validateNonNegative(loadCapacity,
+                    "Грузоподъёмность не может быть отрицательной.");
+
+            validateNonNegative(loadWeight,
+                    "Вес груза не может быть отрицательным.");
+
+            validateMax(loadWeight, loadCapacity,
+                    "Вес груза превышает допустимую грузоподъёмность.");
+        }
+    }
+
+    /**
+     * Конфигурация функций уменьшения скорости транспортного средства.
+     *
+     * <p>Каждая функция принимает:
+     * <ul>
+     *     <li>Количество пассажиров</li>
+     *     <li>Вес груза</li>
+     * </ul>
+     * И возвращает коэффициент уменьшения скорости в диапазоне 0..1.</p>
+     */
+    public record ReductionConf(Function<Integer, Double> loadReductionFunction,
+                                Function<Integer, Double> peopleReductionFunction) {
+
+        /**
+         * Canonical-конструктор с проверкой функций.
+         */
+        public ReductionConf {
+
+            // Проверка функции уменьшения скорости от груза
+            Objects.requireNonNull(loadReductionFunction,
+                    "Функция уменьшения скорости от груза не должна быть null.");
+
+            // Проверка функции уменьшения скорости от пассажиров
+            Objects.requireNonNull(peopleReductionFunction,
+                    "Функция уменьшения скорости от пассажиров не должна быть null.");
+        }
     }
 }
