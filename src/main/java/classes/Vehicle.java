@@ -48,75 +48,65 @@ public abstract class Vehicle extends ImageObject {
     protected double reduction;
 
     /**
-     * Конструктор транспортного средства.
+     * Создаёт транспортное средство на основе конфигурационных объектов.
      *
-     * @param image                     изображение транспорта (не null)
-     * @param startX                    начальная координата X
-     * @param startY                    начальная координата Y
-     * @param width                     габаритная ширина объекта (> 0)
-     * @param height                    габаритная высота объекта (> 0)
-     * @param canvasWidth               ширина канвы (> 0)
-     * @param canvasHeight              высота канвы (> 0)
-     * @param imageWidth                ширина изображения (> 0)
-     * @param imageHeight               высота изображения (> 0)
-     * @param xMotion                   функция движения по оси X (не null)
-     * @param yMotion                   функция движения по оси Y (не null)
-     * @param maxPeopleCNT              максимальное количество пассажиров (≥ 0)
-     * @param peopleCNT                 текущее количество пассажиров (≥ 0, ≤ maxPeopleCNT)
-     * @param loadCapacity              максимальная грузоподъёмность (≥ 0)
-     * @param loadWeight                текущий вес груза (≥ 0, ≤ loadCapacity)
-     * @param loadReductionFunction     функция уменьшения скорости от груза (не null)
-     * @param peopleReductionFunction   функция уменьшения скорости от пассажиров (не null)
+     * <p>Все параметры, связанные с отображением, движением, загрузкой
+     * и уменьшением скорости, передаются через соответствующие record-конфигурации.
+     * Валидация значений выполняется внутри этих конфигураций.</p>
      *
-     * @throws NullPointerException     если любая из функций или изображение равны null
-     * @throws IllegalArgumentException если нарушены ограничения на значения
+     * <p>Конструктор:
+     * <ul>
+     *     <li>Инициализирует базовый класс {@link ImageObject}</li>
+     *     <li>Устанавливает ограничения по пассажирам и грузу</li>
+     *     <li>Сохраняет функции уменьшения скорости</li>
+     *     <li>Вычисляет начальный коэффициент уменьшения скорости</li>
+     * </ul>
+     * </p>
+     *
+     * @param imageConf      конфигурация отображения объекта (не null)
+     * @param motionConf     конфигурация функций движения (не null)
+     * @param loadConf       конфигурация ограничений по пассажирам и грузу (не null)
+     * @param reductionConf  конфигурация функций уменьшения скорости (не null)
+     *
+     * @throws NullPointerException если любой из переданных конфигурационных объектов равен null
      */
-    protected Vehicle(Image image,
-                      double startX,
-                      double startY,
-                      double width,
-                      double height,
-                      double canvasWidth,
-                      double canvasHeight,
-                      double imageWidth,
-                      double imageHeight,
-                      Function<Double, Double> xMotion,
-                      Function<Double, Double> yMotion,
-                      int maxPeopleCNT,
-                      int peopleCNT,
-                      int loadCapacity,
-                      int loadWeight,
-                      Function<Integer, Double> loadReductionFunction,
-                      Function<Integer, Double> peopleReductionFunction) {
+    protected Vehicle(ImageConf imageConf,
+                      MotionConf motionConf,
+                      LoadConf loadConf,
+                      ReductionConf reductionConf) {
 
-        // Инициализация базовой логики движения и отрисовки
-        super(image, startX, startY, width, height,
-                canvasWidth, canvasHeight,
-                imageWidth, imageHeight,
-                xMotion, yMotion);
+        super(
+                Objects.requireNonNull(imageConf,
+                        "Конфигурация изображения не должна быть null.").image(),
+                imageConf.startX(),
+                imageConf.startY(),
+                imageConf.width(),
+                imageConf.height(),
+                imageConf.canvasWidth(),
+                imageConf.canvasHeight(),
+                imageConf.imageWidth(),
+                imageConf.imageHeight(),
+                Objects.requireNonNull(motionConf,
+                        "Конфигурация движения не должна быть null.").xMotion(),
+                motionConf.yMotion()
+        );
 
-        // Проверка функций уменьшения скорости
-        this.peopleReductionFunction = Objects.requireNonNull(
-                peopleReductionFunction,
-                "Функция уменьшения скорости от пассажиров не может быть null");
+        this.peopleReductionFunction =
+                Objects.requireNonNull(reductionConf,
+                                "Конфигурация уменьшения скорости не должна быть null.")
+                        .peopleReductionFunction();
 
-        this.loadReductionFunction = Objects.requireNonNull(
-                loadReductionFunction,
-                "Функция уменьшения скорости от груза не может быть null");
+        this.loadReductionFunction =
+                reductionConf.loadReductionFunction();
 
-        // Установка ограничений (сообщения на русском)
-        this.maxPeopleCNT = validateNonNegative(maxPeopleCNT,
-                "Максимальное количество пассажиров должно быть >= 0");
+        // Ограничения по пассажирам
+        this.maxPeopleCNT = Objects.requireNonNull(loadConf,
+                "Конфигурация загрузки не должна быть null.").maxPeopleCNT();
+        setPeopleCNT(loadConf.peopleCNT());
 
-        setPeopleCNT(peopleCNT); // внутри проверка на неотрицательность и максимум
-
-        this.loadCapacity = validateNonNegative(loadCapacity,
-                "Грузоподъёмность должна быть >= 0");
-
-        setLoadWeight(loadWeight); // внутри проверка на неотрицательность и максимум
-
-        // Вычисление начального коэффициента уменьшения скорости
-        this.reduction = produceReduction();
+        // Ограничения по грузу
+        this.loadCapacity = loadConf.loadCapacity();
+        setLoadWeight(loadConf.loadWeight());
     }
 
     /**
