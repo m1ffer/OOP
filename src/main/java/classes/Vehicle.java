@@ -314,6 +314,12 @@ public abstract class Vehicle extends ImageObject {
             Objects.requireNonNull(image,
                     "Изображение не должно быть null.");
 
+            //Проверка начальных координат
+            validateNonNegative(startX,
+                    "Начальные координаты не должны быть отрицательными");
+            validateNonNegative(startY,
+                    "Начальные координаты не должны быть отрицательными");
+
             // Проверка габаритов объекта
             validatePositive(width,
                     "Ширина объекта должна быть больше 0.");
