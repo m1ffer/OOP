@@ -132,11 +132,8 @@ public abstract class AirVehicle extends Vehicle{
         elapsedTime += deltaSeconds * (1 - getReduction());
 
         // Пересчитываем координаты через функции движения
-        x = xMotion.apply(elapsedTime);
-        y = Math.min(Math.max(
-                yMotion.apply(elapsedTime),
-                upperBound),
-                lowerBound);
+        x = startX + xMotion.apply(elapsedTime);
+        y = Math.clamp(startY + yMotion.apply(elapsedTime), upperBound, lowerBound - height);
     }
 
     // =======================
@@ -171,11 +168,6 @@ public abstract class AirVehicle extends Vehicle{
          * </ul>
          */
         public FlightConf {
-            // Проверка неотрицательности
-            validateNonNegative(lowerBound,
-                    "Нижняя граница высоты не может быть отрицательной.");
-            validateNonNegative(upperBound,
-                    "Верхняя граница высоты не может быть отрицательной.");
 
             // Проверка корректности диапазона
             validateMinEquals(lowerBound, upperBound,

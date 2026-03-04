@@ -8,9 +8,9 @@ public class RepeatingTimer {
 
     private final Timeline timeline;
 
-    public RepeatingTimer(long millis, Runnable action) {
+    public RepeatingTimer(double seconds, Runnable action) {
         timeline = new Timeline(
-                new KeyFrame(Duration.millis(millis), e -> action.run())
+                new KeyFrame(Duration.seconds(seconds), e -> action.run())
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
     }

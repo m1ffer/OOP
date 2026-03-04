@@ -17,6 +17,9 @@ import java.util.function.Function;
  */
 public abstract class SceneObject {
 
+    protected final double startX;
+    protected double startY;
+
     /** Текущая координата по оси X (левый верхний угол объекта). */
     protected double x;
 
@@ -75,6 +78,8 @@ public abstract class SceneObject {
                           Function<Double, Double> yMotion) {
 
         // Инициализация стартового положения
+        this.startX = startX;
+        this.startY = startY;
         this.x = startX;
         this.y = startY;
 
@@ -104,8 +109,8 @@ public abstract class SceneObject {
         elapsedTime += deltaSeconds;
 
         // Вычисляем новые координаты
-        x = xMotion.apply(elapsedTime);
-        y = yMotion.apply(elapsedTime);
+        x = startX + xMotion.apply(elapsedTime);
+        y = startY + yMotion.apply(elapsedTime);
     }
 
     /**
@@ -320,7 +325,7 @@ public abstract class SceneObject {
      * @throws IllegalArgumentException если value < 0
      */
     public static double validateNonNegative(double value, String message){
-        return validateMinEquals(value, 0.0, message);
+        return validateMin(value, 0.0, message);
     }
 
     /**

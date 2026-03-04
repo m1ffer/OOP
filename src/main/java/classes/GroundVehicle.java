@@ -128,6 +128,8 @@ abstract public class GroundVehicle extends Vehicle {
             );
         }
 
+        startY = groundLevel - height;
+
         // Начальное состояние — движение с полной скоростью
         currentSpeedFactor = 1;
         state = GroundState.MOVING_CONSTANT;
@@ -185,16 +187,17 @@ abstract public class GroundVehicle extends Vehicle {
                 elapsedTime += deltaSeconds * effectiveSpeed;
 
                 // Пересчёт координаты X
-                x = xMotion.apply(elapsedTime);
+                x = startX + xMotion.apply(elapsedTime);
         }
 
         // Жёстко фиксируем объект на земле
-        y = groundLevel - height;
+        y = startY;
     }
 
     /**
      * Начать торможение.
      */
+    @Override
     public void stop() {
         if (state != GroundState.STOPPED) {
             acceleration = stopAcceleration;
@@ -205,11 +208,17 @@ abstract public class GroundVehicle extends Vehicle {
     /**
      * Начать разгон.
      */
+    @Override
     public void start() {
         if (state != GroundState.MOVING_CONSTANT) {
             acceleration = startAcceleration;
             state = GroundState.ACCELERATING;
         }
+    }
+
+    @Override
+    public boolean isStopped(){
+        return state == GroundState.STOPPED;
     }
 
     // =======================
@@ -248,10 +257,7 @@ abstract public class GroundVehicle extends Vehicle {
         }
     }
 
-    // ==============================
-    // ===== ВСПОМОГАТЕЛЬНОЕ ========
-    // ==============================
 
-    /** Допустимая погрешность сравнения вещественных чисел. */
-    private static final double VERY_SMALL_NUMBER = 0.01;
+
+
 }

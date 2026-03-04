@@ -102,11 +102,21 @@ public abstract class Vehicle extends ImageObject {
         // Ограничения по пассажирам
         this.maxPeopleCNT = Objects.requireNonNull(loadConf,
                 "Конфигурация загрузки не должна быть null.").maxPeopleCNT();
-        setPeopleCNT(loadConf.peopleCNT());
+        var peopleCNT = validateNonNegative(loadConf.peopleCNT(), "Количество пассажиров должно быть >= 0");
+        this.peopleCNT = validateMax(
+                peopleCNT, maxPeopleCNT,
+                "Количество пассажиров превышает максимальное"
+        );
 
         // Ограничения по грузу
         this.loadCapacity = loadConf.loadCapacity();
-        setLoadWeight(loadConf.loadWeight());
+        var loadWeight = validateNonNegative(loadConf.loadWeight(), "Вес груза должен быть >= 0");
+        this.loadWeight = validateMax(
+                loadWeight, loadCapacity,
+                "Вес груза превышает грузоподъёмность"
+        );
+
+        reduction = produceReduction();
     }
 
     /**
@@ -125,9 +135,22 @@ public abstract class Vehicle extends ImageObject {
         elapsedTime += deltaSeconds * (1 - getReduction());
 
         // Пересчитываем координаты через функции движения
-        x = xMotion.apply(elapsedTime);
-        y = yMotion.apply(elapsedTime);
+        x = startX + xMotion.apply(elapsedTime);
+        y = startY + yMotion.apply(elapsedTime);
     }
+
+    public void stop(){
+        throw new UnsupportedOperationException("У этого транспорта нет возможности остановиться");
+    }
+
+    public void start(){
+        throw new UnsupportedOperationException("У этого транспорта нет возможности начать движение после остановки");
+    }
+
+    public boolean isStopped(){
+        return false;
+    }
+
 
     /**
      * Вычисляет суммарный коэффициент уменьшения скорости.
@@ -159,6 +182,8 @@ public abstract class Vehicle extends ImageObject {
      */
     public void setPeopleCNT(int peopleCNT) {
         validateNonNegative(peopleCNT, "Количество пассажиров должно быть >= 0");
+        if (!isStopped())
+            throw new UnsupportedOperationException("Транспорт должен остановиться");
         this.peopleCNT = validateMax(
                 peopleCNT, maxPeopleCNT,
                 "Количество пассажиров превышает максимальное"
@@ -174,6 +199,8 @@ public abstract class Vehicle extends ImageObject {
      */
     public void setLoadWeight(int loadWeight) {
         validateNonNegative(loadWeight, "Вес груза должен быть >= 0");
+        if (!isStopped())
+            throw new UnsupportedOperationException("Транспорт должен остановиться");
         this.loadWeight = validateMax(
                 loadWeight, loadCapacity,
                 "Вес груза превышает грузоподъёмность"
@@ -314,12 +341,6 @@ public abstract class Vehicle extends ImageObject {
             Objects.requireNonNull(image,
                     "Изображение не должно быть null.");
 
-            //Проверка начальных координат
-            validateNonNegative(startX,
-                    "Начальные координаты не должны быть отрицательными");
-            validateNonNegative(startY,
-                    "Начальные координаты не должны быть отрицательными");
-
             // Проверка габаритов объекта
             validatePositive(width,
                     "Ширина объекта должна быть больше 0.");
@@ -435,4 +456,11 @@ public abstract class Vehicle extends ImageObject {
                     "Функция уменьшения скорости от пассажиров не должна быть null.");
         }
     }
+
+    // ==============================
+    // ===== ВСПОМОГАТЕЛЬНОЕ ========
+    // ==============================
+
+    /** Допустимая погрешность сравнения вещественных чисел. */
+    protected static final double VERY_SMALL_NUMBER = 0.01;
 }
