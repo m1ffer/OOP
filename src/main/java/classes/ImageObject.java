@@ -89,26 +89,4 @@ public abstract class ImageObject extends SceneObject {
     public void draw(GraphicsContext gc) {
         gc.drawImage(image, x, y, imageWidth, imageHeight);
     }
-
-    // =======================
-    // ====== ГЕТТЕРЫ ========
-    // =======================
-
-    /**
-     * Возвращает ширину изображения.
-     *
-     * @return ширина изображения
-     */
-    public double getImageWidth() {
-        return imageWidth;
-    }
-
-    /**
-     * Возвращает высоту изображения.
-     *
-     * @return высота изображения
-     */
-    public double getImageHeight() {
-        return imageHeight;
-    }
 }

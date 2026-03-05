@@ -5,7 +5,11 @@ import javafx.scene.image.Image;
 import java.util.function.Function;
 
 public class Plane extends AirVehicle implements Animatable{
-    public static final Image POLO_IMAGE = new Image("file:D:/plane.png");
+    public static final Image PLANE_IMAGE = new Image(
+            Plane.class
+                    .getResource("/images/plane.png")
+                    .toExternalForm()
+    );;
     public static final double IMAGE_HEIGHT = 100;
     public static final double IMAGE_WIDTH = IMAGE_HEIGHT * 4.35;
     public static final double WIDTH = IMAGE_WIDTH;
@@ -22,7 +26,7 @@ public class Plane extends AirVehicle implements Animatable{
                       double startY){
         super(
                 new ImageConf(
-                        POLO_IMAGE,
+                        PLANE_IMAGE,
                         canvasWidth + VERY_SMALL_NUMBER,
                         startY,
                         WIDTH,

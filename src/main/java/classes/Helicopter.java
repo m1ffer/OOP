@@ -5,7 +5,11 @@ import javafx.scene.image.Image;
 import java.util.function.Function;
 
 public class Helicopter extends AirVehicle implements Animatable{
-    private static final Image POLO_IMAGE = new Image("file:D:/helicopter.png");
+    private static final Image HELICOPTER_IMAGE = new Image(
+            Helicopter.class
+                    .getResource("/images/helicopter.png")
+                    .toExternalForm()
+    );;
     private static final double IMAGE_HEIGHT = 100;
     private static final double IMAGE_WIDTH = IMAGE_HEIGHT * 3.255721393;
     private static final double WIDTH = IMAGE_WIDTH;
@@ -23,7 +27,7 @@ public class Helicopter extends AirVehicle implements Animatable{
                        double upperBound){
         super(
                 new ImageConf(
-                        POLO_IMAGE,
+                        HELICOPTER_IMAGE,
                         - WIDTH - VERY_SMALL_NUMBER,
                         (upperBound + lowerBound - HEIGHT) / 2,
                         WIDTH,

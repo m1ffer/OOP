@@ -45,13 +45,13 @@ public abstract class SceneObject {
      * Функция движения по оси X.
      * Принимает время (в секундах) и возвращает координату X.
      */
-    protected Function<Double, Double> xMotion;
+    protected final Function<Double, Double> xMotion;
 
     /**
      * Функция движения по оси Y.
      * Принимает время (в секундах) и возвращает координату Y.
      */
-    protected Function<Double, Double> yMotion;
+    protected final Function<Double, Double> yMotion;
 
     /**
      * Создаёт новый объект сцены.
@@ -136,14 +136,6 @@ public abstract class SceneObject {
     // ====== СЕТТЕРЫ ========
     // =======================
 
-    public void setXMotion(Function <Double, Double> xMotion){
-        this.xMotion = Objects.requireNonNull(xMotion, "");
-    }
-
-    public void setYMotion(Function <Double, Double> yMotion){
-        this.yMotion = Objects.requireNonNull(yMotion, "");
-    }
-
     /**
      * Устанавливает ширину канвы.
      *
@@ -180,24 +172,6 @@ public abstract class SceneObject {
     // =======================
 
     /**
-     * Возвращает текущую координату X левого верхнего угла объекта.
-     *
-     * @return координата X
-     */
-    public double getX() {
-        return x;
-    }
-
-    /**
-     * Возвращает текущую координату Y левого верхнего угла объекта.
-     *
-     * @return координата Y
-     */
-    public double getY() {
-        return y;
-    }
-
-    /**
      * Возвращает ширину объекта.
      *
      * @return ширина объекта
@@ -213,15 +187,6 @@ public abstract class SceneObject {
      */
     public double getHeight() {
         return height;
-    }
-
-    /**
-     * Возвращает время существования объекта в секундах.
-     *
-     * @return время жизни объекта
-     */
-    public double getElapsedTime() {
-        return elapsedTime;
     }
 
     // ==============================

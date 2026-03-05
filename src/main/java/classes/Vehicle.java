@@ -212,26 +212,6 @@ public abstract class Vehicle extends ImageObject {
     // ===== ГЕТТЕРЫ =========
     // =======================
 
-    /** @return максимальное количество пассажиров */
-    public int getMaxPeopleCNT() {
-        return maxPeopleCNT;
-    }
-
-    /** @return текущее количество пассажиров */
-    public int getPeopleCNT() {
-        return peopleCNT;
-    }
-
-    /** @return максимальная грузоподъёмность */
-    public int getLoadCapacity() {
-        return loadCapacity;
-    }
-
-    /** @return текущий вес груза */
-    public int getLoadWeight() {
-        return loadWeight;
-    }
-
     /** @return текущий коэффициент уменьшения скорости (всегда в [0,1]) */
     public double getReduction() {
         return reduction;
