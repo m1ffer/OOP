@@ -112,20 +112,39 @@
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
+
                 <executions>
+
+                    <!-- запуск приложения -->
                     <execution>
-                        <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>org.example.app/org.example.app.Application</mainClass>
+                        </configuration>
+                    </execution>
+
+                    <!-- создание runtime image -->
+                    <execution>
+                        <id>create-runtime</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jlink</goal>
+                        </goals>
+
+                        <configuration>
+                            <mainClass>org.example.app/org.example.app.Application</mainClass>
                             <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
+
                             <jlinkImageName>app</jlinkImageName>
-                            <noManPages>true</noManPages>
+                            <jlinkZipName>app</jlinkZipName>
+
+
                             <stripDebug>true</stripDebug>
+                            <noManPages>true</noManPages>
                             <noHeaderFiles>true</noHeaderFiles>
                         </configuration>
                     </execution>
+
                 </executions>
             </plugin>
         </plugins>

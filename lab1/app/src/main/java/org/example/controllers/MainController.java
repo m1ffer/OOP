@@ -117,7 +117,7 @@ public class MainController implements Initializable {
     private void getAnimatableAndActions() {
         vehicles = new ArrayDeque<>();
         //... Добавить объекты
-        /*addPolo(1, 0,
+        addPolo(1, 0,
                 new Timings(
                      3, 2,
                     new ActionRecord(Action.SET_LOAD_WEIGHT, 200)),
@@ -126,7 +126,7 @@ public class MainController implements Initializable {
         addPolo(2, 0);
         addLamborghini(1, 0);
         addPlane(10, 1000);
-        addHelicopter(4, 200);*/
+        addHelicopter(4, 200);
         addLamborghini(2, 100,
                 new Timings(3, 2));
     }

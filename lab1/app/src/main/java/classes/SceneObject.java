@@ -17,7 +17,7 @@ import java.util.function.Function;
  */
 public abstract class SceneObject {
 
-    protected final double startX;
+    protected double startX;
     protected double startY;
 
     /** Текущая координата по оси X (левый верхний угол объекта). */
