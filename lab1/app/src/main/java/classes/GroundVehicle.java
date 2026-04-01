@@ -133,6 +133,7 @@ abstract public class GroundVehicle extends Vehicle {
         // Начальное состояние — движение с полной скоростью
         currentSpeedFactor = 1;
         state = GroundState.MOVING_CONSTANT;
+        System.out.println(startX);
     }
 
     /**
