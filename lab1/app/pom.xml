@@ -95,6 +95,29 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Core контейнер -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>6.1.6</version>
+        </dependency>
+
+        <!-- Аннотации (обычно уже тянется, но можно явно) -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>6.1.6</version>
+        </dependency>
+
+        <!-- Lombok (как ты и хотел) -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.44</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -104,8 +127,15 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <source>25</source>
-                    <target>25</target>
+                    <source>21</source>
+                    <target>21</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.44</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
@@ -119,7 +149,7 @@
                     <execution>
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>org.example.app/org.example.app.Application</mainClass>
+                            <mainClass>org.example.app.Launcher</mainClass>
                         </configuration>
                     </execution>
 
@@ -132,7 +162,7 @@
                         </goals>
 
                         <configuration>
-                            <mainClass>org.example.app/org.example.app.Application</mainClass>
+                            <mainClass>org.example.app.Launcher</mainClass>
                             <launcher>app</launcher>
 
                             <jlinkImageName>app</jlinkImageName>

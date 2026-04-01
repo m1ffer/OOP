@@ -69,9 +69,9 @@ public interface Animatable {
     /**
      * Устанавливает количество людей в объекте (например, пассажиров).
      *
-     * @param peopleCNT количество людей
+     * @param peopleCount количество людей
      */
-    void setPeopleCNT(int peopleCNT);
+    void setPeopleCNT(int peopleCount);
 
     /**
      * Устанавливает вес груза.
