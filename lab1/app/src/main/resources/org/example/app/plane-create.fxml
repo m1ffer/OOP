@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="146.0" prefWidth="491.0" spacing="15.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllers.PlaneCreateController">
+    <children>
+        <HBox prefHeight="29.0" prefWidth="600.0" VBox.vgrow="NEVER">
+            <children>
+                <Label prefHeight="18.0" prefWidth="136.0" text="Количество людей: " HBox.hgrow="NEVER">
+                    <HBox.margin>
+                        <Insets left="10.0" top="15.0" />
+                    </HBox.margin>
+                </Label>
+                <TextField fx:id="peopleCount" promptText="Введите количество" HBox.hgrow="NEVER">
+                    <HBox.margin>
+                        <Insets left="25.0" top="10.0" />
+                    </HBox.margin>
+                </TextField>
+                <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            </children>
+        </HBox>
+        <HBox prefHeight="27.0" prefWidth="600.0" VBox.vgrow="NEVER">
+            <children>
+                <Label prefHeight="18.0" prefWidth="94.0" text="Вес груза (кг):" HBox.hgrow="NEVER">
+                    <HBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                    </HBox.margin>
+                </Label>
+                <TextField fx:id="loadWeight" promptText="Введите вес" HBox.hgrow="NEVER">
+                    <HBox.margin>
+                        <Insets left="66.0" />
+                    </HBox.margin>
+                </TextField>
+                <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            </children>
+        </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label prefHeight="18.0" prefWidth="151.0" text="Ордината начала полета:">
+               <HBox.margin>
+                  <Insets left="10.0" top="5.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="startY" promptText="Введите ординату">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </TextField>
+            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+        <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+    </children>
+</VBox>

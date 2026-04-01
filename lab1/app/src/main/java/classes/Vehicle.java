@@ -24,7 +24,7 @@ public abstract class Vehicle extends ImageObject {
     protected final int maxPeopleCNT;
 
     /** Текущее количество пассажиров в транспорте. */
-    protected int peopleCNT;
+    protected int peopleCount;
 
     /** Максимальная грузоподъёмность (в килограммах). */
     protected final int loadCapacity;
@@ -102,9 +102,9 @@ public abstract class Vehicle extends ImageObject {
         // Ограничения по пассажирам
         this.maxPeopleCNT = Objects.requireNonNull(loadConf,
                 "Конфигурация загрузки не должна быть null.").maxPeopleCNT();
-        var peopleCNT = validateNonNegative(loadConf.peopleCNT(), "Количество пассажиров должно быть >= 0");
-        this.peopleCNT = validateMax(
-                peopleCNT, maxPeopleCNT,
+        var peopleCount = validateNonNegative(loadConf.peopleCount(), "Количество пассажиров должно быть >= 0");
+        this.peopleCount = validateMax(
+                peopleCount, maxPeopleCNT,
                 "Количество пассажиров превышает максимальное"
         );
 
@@ -162,11 +162,11 @@ public abstract class Vehicle extends ImageObject {
 
         // Проверяем корректность функций и результата
         validateReductionFunctions(
-                peopleReductionFunction, peopleCNT,
+                peopleReductionFunction, peopleCount,
                 loadReductionFunction, loadWeight
         );
 
-        return peopleReductionFunction.apply(peopleCNT)
+        return peopleReductionFunction.apply(peopleCount)
                 + loadReductionFunction.apply(loadWeight);
     }
 
@@ -177,15 +177,15 @@ public abstract class Vehicle extends ImageObject {
     /**
      * Устанавливает количество пассажиров.
      *
-     * @param peopleCNT новое количество пассажиров (≥ 0, ≤ maxPeopleCNT)
+     * @param peopleCount новое количество пассажиров (≥ 0, ≤ maxPeopleCNT)
      * @throws IllegalArgumentException если значение отрицательное или превышает максимум
      */
-    public void setPeopleCNT(int peopleCNT) {
-        validateNonNegative(peopleCNT, "Количество пассажиров должно быть >= 0");
+    public void setPeopleCNT(int peopleCount) {
+        validateNonNegative(peopleCount, "Количество пассажиров должно быть >= 0");
         if (!isStopped())
             throw new UnsupportedOperationException("Транспорт должен остановиться");
-        this.peopleCNT = validateMax(
-                peopleCNT, maxPeopleCNT,
+        this.peopleCount = validateMax(
+                peopleCount, maxPeopleCNT,
                 "Количество пассажиров превышает максимальное"
         );
         reduction = produceReduction();
@@ -258,7 +258,7 @@ public abstract class Vehicle extends ImageObject {
      * Проверяет обе функции уменьшения скорости и их суммарный результат.
      *
      * @param peopleReductionFunction функция от пассажиров
-     * @param peopleCNT               текущее количество пассажиров
+     * @param peopleCount               текущее количество пассажиров
      * @param loadReductionFunction   функция от груза
      * @param loadWeight              текущий вес груза
      * @throws IllegalArgumentException если хотя бы одна из функций возвращает
@@ -266,12 +266,12 @@ public abstract class Vehicle extends ImageObject {
      */
     public static void validateReductionFunctions(
             Function<Integer, Double> peopleReductionFunction,
-            int peopleCNT,
+            int peopleCount,
             Function<Integer, Double> loadReductionFunction,
             int loadWeight) {
 
         validateReductionFunction(
-                peopleReductionFunction, peopleCNT,
+                peopleReductionFunction, peopleCount,
                 "Коэффициент уменьшения от пассажиров должен быть в [0,1]");
 
         validateReductionFunction(
@@ -279,7 +279,7 @@ public abstract class Vehicle extends ImageObject {
                 "Коэффициент уменьшения от груза должен быть в [0,1]");
 
         validateReduction(
-                peopleReductionFunction.apply(peopleCNT)
+                peopleReductionFunction.apply(peopleCount)
                         + loadReductionFunction.apply(loadWeight),
                 "Суммарный коэффициент уменьшения должен быть в [0,1]"
         );
@@ -378,7 +378,7 @@ public abstract class Vehicle extends ImageObject {
      * а текущие значения не должны превышать максимальные.</p>
      */
     public record LoadConf(int maxPeopleCNT,
-                           int peopleCNT,
+                           int peopleCount,
                            int loadCapacity,
                            int loadWeight) {
 
@@ -391,10 +391,10 @@ public abstract class Vehicle extends ImageObject {
             validateNonNegative(maxPeopleCNT,
                     "Максимальное количество пассажиров не может быть отрицательным.");
 
-            validateNonNegative(peopleCNT,
+            validateNonNegative(peopleCount,
                     "Количество пассажиров не может быть отрицательным.");
 
-            validateMax(peopleCNT, maxPeopleCNT,
+            validateMax(peopleCount, maxPeopleCNT,
                     "Количество пассажиров превышает допустимый максимум.");
 
             // Проверка ограничений по грузу
