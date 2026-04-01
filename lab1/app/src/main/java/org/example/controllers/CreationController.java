@@ -77,21 +77,26 @@ public class CreationController {
     }
     @FXML
     private void startAnimation(){
-        try {
-            info.unbind();
-            error.unbind();
-            FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/org/example/app/view.fxml"));
-            fxmlLoader.setControllerFactory(context::getBean);
-            Scene scene = new Scene(fxmlLoader.load());
-            Stage stage = (Stage) configContainer.getScene().getWindow();
-            stage.setScene(scene);
-            stage.sizeToScene();   // окно принимает размер содержимого
-            stage.setResizable(false); // запрещаем изменение размера
-            stage.show();
+        if (!creationModel.hasVehicles()) {
+            AlertUtil.setProperty(scene.getError(), "Вы не добавили ни одного транспорта");
         }
-        catch(IOException e){
-            System.out.println("Не удалось загрузить сцену");
-            e.printStackTrace();
+        else {
+            System.out.println("bebebe");
+            try {
+                info.unbind();
+                error.unbind();
+                FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/org/example/app/view.fxml"));
+                fxmlLoader.setControllerFactory(context::getBean);
+                Scene scene = new Scene(fxmlLoader.load());
+                Stage stage = (Stage) configContainer.getScene().getWindow();
+                stage.setScene(scene);
+                stage.sizeToScene();   // окно принимает размер содержимого
+                stage.setResizable(false); // запрещаем изменение размера
+                stage.show();
+            } catch (IOException e) {
+                System.out.println("Не удалось загрузить сцену");
+                e.printStackTrace();
+            }
         }
     }
 }

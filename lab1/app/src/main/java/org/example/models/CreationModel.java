@@ -10,6 +10,7 @@ import org.example.forms.FormResult;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -19,6 +20,10 @@ public class CreationModel {
     private final SceneModel scene;
     
     private VehicleCreateController<?> currentController;
+
+    public boolean hasVehicles(){
+        return animationModel.haveConfigs();
+    }
 
     public List<VehicleCreator<?>> getAvailableCreators() {
         return creators;
@@ -39,24 +44,26 @@ public class CreationModel {
     }
 
     public void createVehicle() {
-        try {
-            Config config = currentController.buildConfig();
-            animationModel.addVehicle(config);
-            AlertUtil.setProperty(scene.getInfo(),
-                    "Транспорт добавлен");
-        }
-        catch(NumberFormatException ignored){
+        if (currentController == null)
             AlertUtil.setProperty(scene.getError(),
-                    "Некорректные числовые значения");
-        }
-        catch(IllegalArgumentException e){
-            AlertUtil.setProperty(scene.getError(),
-                    e.getMessage());
-        }
-        catch(Throwable e){
-            AlertUtil.setProperty(scene.getError(),
-                    e.getMessage());
-            e.printStackTrace();
+                    "Сначала выберите транспорт");
+        else {
+            try {
+                Config config = currentController.buildConfig();
+                animationModel.addVehicle(config);
+                AlertUtil.setProperty(scene.getInfo(),
+                        "Транспорт добавлен");
+            } catch (NumberFormatException ignored) {
+                AlertUtil.setProperty(scene.getError(),
+                        "Некорректные числовые значения");
+            } catch (IllegalArgumentException e) {
+                AlertUtil.setProperty(scene.getError(),
+                        e.getMessage());
+            } catch (Throwable e) {
+                AlertUtil.setProperty(scene.getError(),
+                        e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 }

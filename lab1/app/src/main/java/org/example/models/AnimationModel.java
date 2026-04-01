@@ -30,6 +30,9 @@ public class AnimationModel {
     public boolean haveVehicles(){
         return vehicle != null || !vehicles.isEmpty();
     }
+    boolean haveConfigs(){
+        return !configs.isEmpty();
+    }
     public void stop(){
         try {
             vehicle.stop();
