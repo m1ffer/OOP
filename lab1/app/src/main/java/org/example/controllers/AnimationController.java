@@ -36,7 +36,8 @@ public class AnimationController implements Initializable {
     private final AnimationModel animationModel;
     private final AnnotationConfigApplicationContext context;
     private static final double GROUND_LEVEL = 645;
-    private static final double TICK_TIME = 0.01;
+    private static final double TICK_TIME = 32;
+    private static final double VEHICLE_TICK_TIME = TICK_TIME / 1000;
     private RepeatingTimer timer;
     private final StringProperty error = new SimpleStringProperty("");
     private final StringProperty info = new SimpleStringProperty("");
@@ -51,14 +52,14 @@ public class AnimationController implements Initializable {
         scene.setCanvasHeight(canvas.getHeight());
         scene.setGroundLevel(GROUND_LEVEL);
         animationModel.initVehicles();
-        timer = new RepeatingTimer(TICK_TIME, () -> {
+        timer = new RepeatingTimer(delta -> {
             if (animationModel.haveVehicles()) {
                 clearCanvas();
                 animationModel.draw();
-                animationModel.update(TICK_TIME);
-            }
-            else
+                animationModel.update(delta);
+            } else {
                 closeApp();
+            }
         });
         timer.start();
     }

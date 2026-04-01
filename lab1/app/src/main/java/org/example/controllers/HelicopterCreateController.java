@@ -4,7 +4,9 @@ import configs.HelicopterConfig;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import org.example.models.SceneModel;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HelicopterCreateController extends AbstractCreateController<HelicopterConfig> {
     public HelicopterCreateController(SceneModel scene) {
         super(scene);

@@ -11,20 +11,23 @@ public class AlertUtil {
     public static void bindAndShowErrors(StringProperty observer, StringProperty listened){
         observer.bind(listened);
         observer.addListener((observable, oldValue, newValue) -> {
-            showError(newValue);
+            if (!newValue.isBlank())
+                showError(newValue);
         });
     }
 
     public static void bindAndShowInfo(StringProperty observer, StringProperty listened){
         observer.bind(listened);
         observer.addListener((observable, oldValue, newValue) -> {
-            showInfo(newValue);
+            if (!newValue.isBlank())
+                showInfo(newValue);
         });
     }
 
     public static void setProperty(StringProperty property, String text){
         run(() -> {
             property.set(text);
+            property.set("");
         });
     }
 

@@ -1,29 +1,46 @@
 package org.example.controllers;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
+import javafx.animation.AnimationTimer;
+
+import java.util.function.Consumer;
 
 public class RepeatingTimer {
 
-    private final Timeline timeline;
+    private final AnimationTimer timer;
+    private boolean running = false;
+    private long lastTime = 0;
 
-    public RepeatingTimer(double seconds, Runnable action) {
-        timeline = new Timeline(
-                new KeyFrame(Duration.seconds(seconds), e -> action.run())
-        );
-        timeline.setCycleCount(Timeline.INDEFINITE);
+    public RepeatingTimer(Consumer<Double> action) {
+        this.timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (!running) return;
+
+                if (lastTime == 0) {
+                    lastTime = now;
+                    return;
+                }
+
+                double delta = (now - lastTime) / 1_000_000_000.0;
+                lastTime = now;
+
+                action.accept(delta);
+            }
+        };
     }
 
     public void start() {
-        timeline.play();
+        running = true;
+        lastTime = 0;
+        timer.start();
     }
 
     public void stop() {
-        timeline.stop();
+        running = false;
+        timer.stop();
     }
 
     public void pause() {
-        timeline.pause();
+        running = false;
     }
 }

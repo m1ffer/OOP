@@ -75,13 +75,11 @@ public class AnimationModel {
         }
     }
     public void update(double delta){
-        if (vehicle == null)
-            vehicle = vehicles.removeFirst();
         vehicle.move(delta);
         if (!hasAppeared && vehicle.isVisible())
             hasAppeared = true;
         if (hasAppeared && !vehicle.isVisible()){
-            vehicle = null;
+            vehicle = vehicles.isEmpty() ? null : vehicles.removeFirst();
             hasAppeared = false;
         }
     }

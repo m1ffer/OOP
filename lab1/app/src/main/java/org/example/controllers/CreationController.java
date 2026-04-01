@@ -78,6 +78,8 @@ public class CreationController {
     @FXML
     private void startAnimation(){
         try {
+            info.unbind();
+            error.unbind();
             FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/org/example/app/view.fxml"));
             fxmlLoader.setControllerFactory(context::getBean);
             Scene scene = new Scene(fxmlLoader.load());
@@ -87,6 +89,9 @@ public class CreationController {
             stage.setResizable(false); // запрещаем изменение размера
             stage.show();
         }
-        catch(IOException e){}
+        catch(IOException e){
+            System.out.println("Не удалось загрузить сцену");
+            e.printStackTrace();
+        }
     }
 }

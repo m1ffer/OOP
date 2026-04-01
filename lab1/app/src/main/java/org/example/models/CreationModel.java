@@ -42,6 +42,8 @@ public class CreationModel {
         try {
             Config config = currentController.buildConfig();
             animationModel.addVehicle(config);
+            AlertUtil.setProperty(scene.getInfo(),
+                    "Транспорт добавлен");
         }
         catch(NumberFormatException ignored){
             AlertUtil.setProperty(scene.getError(),
