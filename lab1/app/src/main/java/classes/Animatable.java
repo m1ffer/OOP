@@ -1,5 +1,6 @@
 package classes;
 
+import configs.Config;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -14,7 +15,7 @@ import javafx.scene.canvas.GraphicsContext;
  *     <li>сообщать о своём состоянии (остановлен ли объект, вышел ли за границы)</li>
  * </ul>
  */
-public interface Animatable {
+public interface Animatable<C extends Config> {
 
     /**
      * Запускает движение объекта.
@@ -79,4 +80,8 @@ public interface Animatable {
      * @param loadWeight вес груза
      */
     void setLoadWeight(int loadWeight);
+
+    void rebuild (C config);
+
+    C snapshot();
 }

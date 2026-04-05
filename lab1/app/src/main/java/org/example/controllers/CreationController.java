@@ -99,4 +99,13 @@ public class CreationController {
             }
         }
     }
+
+    @FXML
+    private void handleSaveTxt(){
+        creationModel.saveTxt();
+    }
+    @FXML
+    private void handleSaveJson(){
+        creationModel.saveJson();
+    }
 }

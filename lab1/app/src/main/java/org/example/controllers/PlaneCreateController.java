@@ -8,10 +8,7 @@ import org.example.models.SceneModel;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PlaneCreateController extends AbstractCreateController<PlaneConfig> {
-    public PlaneCreateController(SceneModel scene) {
-        super(scene);
-    }
+public class PlaneCreateController implements VehicleCreateController<PlaneConfig> {
     @FXML
     private TextField peopleCount;
     @FXML
@@ -20,7 +17,7 @@ public class PlaneCreateController extends AbstractCreateController<PlaneConfig>
     private TextField startY;
 
     @Override
-    protected PlaneConfig buildConfigObject() {
+    public PlaneConfig buildConfig() {
         return new PlaneConfig(Integer.parseInt(peopleCount.getText()),
                                Integer.parseInt(loadWeight.getText()),
                                Double.parseDouble(startY.getText()));

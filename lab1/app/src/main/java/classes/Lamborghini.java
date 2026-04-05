@@ -1,12 +1,13 @@
 package classes;
 
+import configs.Config;
 import configs.LamborghiniConfig;
 import configs.PoloConfig;
 import javafx.scene.image.Image;
 
 import java.util.function.Function;
 
-public class Lamborghini extends GroundVehicle implements Animatable{
+public class Lamborghini extends GroundVehicle implements Animatable<LamborghiniConfig>{
     private static final Image LAMBORGHINI_IMAGE = new Image(
             Lamborghini.class
                     .getResource("/images/lamborghini.png")
@@ -60,5 +61,27 @@ public class Lamborghini extends GroundVehicle implements Animatable{
                         groundLevel
                 )
         );
+    }
+
+    @Override
+    public LamborghiniConfig snapshot() {
+        return new LamborghiniConfig(this.peopleCount,
+                this.loadWeight,
+                this.x,
+                this.y,
+                this.elapsedTime,
+                this.state,
+                this.currentSpeedFactor,
+                this.acceleration);
+    }
+
+    @Override
+    public void rebuild(LamborghiniConfig config) {
+        super.rebuild(config.x(),
+                config.y(),
+                config.elapsedTime(),
+                config.state(),
+                config.currentSpeedFactor(),
+                config.acceleration());
     }
 }

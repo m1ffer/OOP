@@ -9,7 +9,8 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackages = {
         "org.example.controllers",
         "org.example.models",
-        "factories"
+        "factories",
+        "serialization"
 })
 public class AppConfiguration {
 }

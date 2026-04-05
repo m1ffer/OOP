@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 import configs.PlaneConfig;
 import java.util.function.Function;
 
-public class Plane extends AirVehicle implements Animatable{
+public class Plane extends AirVehicle implements Animatable<PlaneConfig>{
     public static final Image PLANE_IMAGE = new Image(
             Plane.class
                     .getResource("/images/plane.png")
@@ -56,5 +56,18 @@ public class Plane extends AirVehicle implements Animatable{
                         - HEIGHT - VERY_SMALL_NUMBER
                 )
         );
+    }
+
+    @Override
+    public void rebuild(PlaneConfig config) {
+        super.rebuild(config.x(),
+                config.y(),
+                config.elapsedTime());
+    }
+
+    @Override
+    public PlaneConfig snapshot() {
+        return new PlaneConfig(peopleCount, loadWeight, startY,
+                x, y, elapsedTime);
     }
 }

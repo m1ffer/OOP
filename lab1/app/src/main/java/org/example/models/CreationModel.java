@@ -66,4 +66,12 @@ public class CreationModel {
             }
         }
     }
+
+    public void saveTxt(){
+        animationModel.saveTxt();
+    }
+
+    public void saveJson(){
+        animationModel.saveJson();
+    }
 }

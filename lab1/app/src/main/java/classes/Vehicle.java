@@ -170,6 +170,7 @@ public abstract class Vehicle extends ImageObject {
                 + loadReductionFunction.apply(loadWeight);
     }
 
+
     // =======================
     // ===== СЕТТЕРЫ =========
     // =======================

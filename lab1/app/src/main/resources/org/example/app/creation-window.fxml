@@ -9,17 +9,17 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.example.controllers.CreationController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllers.CreationController">
    <children>
       <HBox prefHeight="27.0" prefWidth="600.0" VBox.vgrow="NEVER">
          <children>
-            <Label text="Выберите транспорт: " HBox.hgrow="NEVER">
+            <Label prefHeight="18.0" prefWidth="122.0" text="Выберите транспорт: " HBox.hgrow="NEVER">
                <HBox.margin>
                   <Insets left="20.0" top="20.0" />
                </HBox.margin>
             </Label>
-            <ComboBox prefHeight="10.0" prefWidth="150.0" promptText="Нажми на меня" HBox.hgrow="NEVER" fx:id="vehicleComboBox">
+
+            <ComboBox fx:id="vehicleComboBox" prefHeight="26.0" prefWidth="140.0" promptText="Нажми на меня" HBox.hgrow="NEVER">
                <padding>
                   <Insets left="10.0" />
                </padding>
@@ -30,10 +30,24 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ComboBox>
-            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Region prefHeight="41.0" prefWidth="77.0" HBox.hgrow="ALWAYS" />
+
+            <!-- Новые кнопки -->
+            <Button onAction="#handleSaveTxt" prefHeight="26.0" prefWidth="103.0" text="Сохранить TXT">
+               <HBox.margin>
+                  <Insets right="10.0" top="15.0" />
+               </HBox.margin>
+            </Button>
+
+            <Button onAction="#handleSaveJson" text="Сохранить JSON">
+               <HBox.margin>
+                  <Insets right="10.0" top="15.0" />
+               </HBox.margin>
+            </Button>
+
          </children>
       </HBox>
-      <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" fx:id="configContainer">
+      <VBox fx:id="configContainer" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
          <children>
             <Label text="Для начала выберите транспорт">
                <VBox.margin>
@@ -51,7 +65,7 @@
       <HBox prefHeight="30.0" prefWidth="600.0" VBox.vgrow="NEVER">
          <children>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" text="Добавить транспорт" HBox.hgrow="NEVER" onAction="#addVehicle">
+            <Button mnemonicParsing="false" onAction="#addVehicle" text="Добавить транспорт" HBox.hgrow="NEVER">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -62,7 +76,7 @@
       <HBox prefHeight="53.0" prefWidth="600.0" VBox.vgrow="NEVER">
          <children>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" text="Запустить анимацию" HBox.hgrow="NEVER" onAction="#startAnimation">
+            <Button mnemonicParsing="false" onAction="#startAnimation" text="Запустить анимацию" HBox.hgrow="NEVER">
                <HBox.margin>
                   <Insets top="15.0" />
                </HBox.margin>

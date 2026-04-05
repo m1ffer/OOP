@@ -20,7 +20,7 @@ public class PoloCreator extends AbstractCreator<PoloConfig>{
     private final Class<PoloConfig> configType = PoloConfig.class;
 
     @Override
-    public Animatable createObject(PoloConfig config) {
+    public Animatable<PoloConfig> create(PoloConfig config) {
             return new Polo(
                     scene.getCanvasWidth(),
                     scene.getCanvasHeight(),

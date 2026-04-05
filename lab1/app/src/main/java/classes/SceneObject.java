@@ -1,5 +1,6 @@
 package classes;
 
+import configs.Config;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Objects;
@@ -130,6 +131,12 @@ public abstract class SceneObject {
                 x + width < 0 ||
                 y > canvasHeight ||
                 y + height < 0;
+    }
+
+    protected void rebuild(double x, double y, double elapsedTime){
+        this.x = x;
+        this.y = y;
+        this.elapsedTime = elapsedTime;
     }
 
     // =======================

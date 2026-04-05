@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 import configs.HelicopterConfig;
 import java.util.function.Function;
 
-public class Helicopter extends AirVehicle implements Animatable{
+public class Helicopter extends AirVehicle implements Animatable<HelicopterConfig>{
     public static final Image HELICOPTER_IMAGE = new Image(
             Helicopter.class
                     .getResource("/images/helicopter.png")
@@ -58,5 +58,23 @@ public class Helicopter extends AirVehicle implements Animatable{
                         upperBound
                 )
         );
+    }
+
+    @Override
+    public HelicopterConfig snapshot(){
+        return new HelicopterConfig(peopleCount,
+                loadWeight,
+                lowerBound,
+                upperBound,
+                x,
+                y,
+                elapsedTime);
+    }
+
+    @Override
+    public void rebuild(HelicopterConfig config) {
+        super.rebuild(config.x(),
+                config.y(),
+                config.elapsedTime());
     }
 }

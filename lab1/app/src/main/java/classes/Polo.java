@@ -1,11 +1,12 @@
 package classes;
 
+import configs.LamborghiniConfig;
+import configs.PoloConfig;
 import javafx.scene.image.Image;
 
-import configs.PoloConfig;
 import java.util.function.Function;
 
-public class Polo extends GroundVehicle implements Animatable{
+public class Polo extends GroundVehicle implements Animatable<PoloConfig>{
 
     private static final Image POLO_IMAGE = new Image(
             Polo.class
@@ -62,4 +63,25 @@ public class Polo extends GroundVehicle implements Animatable{
         );
     }
 
+    @Override
+    public void rebuild(PoloConfig config) {
+        super.rebuild(config.x(),
+                config.y(),
+                config.elapsedTime(),
+                config.state(),
+                config.currentSpeedFactor(),
+                config.acceleration());
+    }
+
+    @Override
+    public PoloConfig snapshot() {
+        return new PoloConfig(this.peopleCount,
+                this.loadWeight,
+                this.x,
+                this.y,
+                this.elapsedTime,
+                this.state,
+                this.currentSpeedFactor,
+                this.acceleration);
+    }
 }

@@ -89,4 +89,6 @@ public abstract class ImageObject extends SceneObject {
     public void draw(GraphicsContext gc) {
         gc.drawImage(image, x, y, imageWidth, imageHeight);
     }
+
+
 }

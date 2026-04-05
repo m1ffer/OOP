@@ -2,12 +2,15 @@ package org.example.controllers;
 
 import classes.Helicopter;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import lombok.RequiredArgsConstructor;
 import org.example.alert.AlertUtil;
@@ -26,6 +29,12 @@ import java.util.ResourceBundle;
 public class AnimationController implements Initializable {
     @FXML
     private Canvas canvas;
+    @FXML
+    private Button pauseButton;
+    @FXML
+    private Button saveTxt;
+    @FXML
+    private Button saveJson;
     private GraphicsContext gc;
     private final static Image BACKGROUND = new Image(
             AnimationController.class
@@ -36,11 +45,10 @@ public class AnimationController implements Initializable {
     private final AnimationModel animationModel;
     private final AnnotationConfigApplicationContext context;
     private static final double GROUND_LEVEL = 645;
-    private static final double TICK_TIME = 32;
-    private static final double VEHICLE_TICK_TIME = TICK_TIME / 1000;
     private RepeatingTimer timer;
     private final StringProperty error = new SimpleStringProperty("");
     private final StringProperty info = new SimpleStringProperty("");
+    private final BooleanProperty running = new SimpleBooleanProperty(false);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -61,6 +69,11 @@ public class AnimationController implements Initializable {
                 closeApp();
             }
         });
+        running.bindBidirectional(timer.getRunning());
+        saveTxt.visibleProperty().bind(running.not());
+        saveJson.visibleProperty().bind(running.not());
+        saveTxt.managedProperty().bind(saveTxt.visibleProperty());
+        saveJson.managedProperty().bind(saveJson.visibleProperty());
         timer.start();
     }
     private void clearCanvas(){
@@ -68,15 +81,24 @@ public class AnimationController implements Initializable {
         gc.drawImage(BACKGROUND, 0, 0,
                 canvas.getWidth(), canvas.getHeight());
     }
-    public void stop(){
-        animationModel.stop();
-    }
-    public void start(){
-        animationModel.start();
-    }
+
     private void closeApp(){
         timer.stop();
-        context.close();
         Platform.exit();
+    }
+
+    @FXML
+    public void handlePause(){
+        running.set(!running.get());
+    }
+
+    @FXML
+    public void handleSaveText(){
+        animationModel.saveTxt();
+    }
+
+    @FXML
+    public void handleSaveJson(){
+        animationModel.saveJson();
     }
 }

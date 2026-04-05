@@ -4,8 +4,6 @@ import classes.Animatable;
 import classes.Lamborghini;
 import configs.LamborghiniConfig;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.example.forms.FormResult;
 import org.example.models.SceneModel;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -21,7 +19,7 @@ public class LamborghiniCreator extends AbstractCreator<LamborghiniConfig>{
     private final Class<LamborghiniConfig> configType = LamborghiniConfig.class;
 
     @Override
-    protected Animatable createObject(LamborghiniConfig config) {
+    public Animatable<LamborghiniConfig> create(LamborghiniConfig config) {
         return new Lamborghini(scene.getCanvasWidth(),
                 scene.getCanvasHeight(),
                 scene.getGroundLevel(),

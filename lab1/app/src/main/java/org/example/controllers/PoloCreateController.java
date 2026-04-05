@@ -7,11 +7,7 @@ import org.example.models.SceneModel;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PoloCreateController extends AbstractCreateController<PoloConfig> {
-    public PoloCreateController(SceneModel scene) {
-        super(scene);
-    }
-
+public class PoloCreateController implements VehicleCreateController<PoloConfig> {
     @FXML
     private TextField peopleCount;
 
@@ -19,7 +15,7 @@ public class PoloCreateController extends AbstractCreateController<PoloConfig> {
     private TextField loadWeight;
 
     @Override
-    protected PoloConfig buildConfigObject() {
+    public PoloConfig buildConfig() {
         return new PoloConfig(Integer.parseInt(peopleCount.getText()),
                               Integer.parseInt(loadWeight.getText()));
     }

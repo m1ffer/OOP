@@ -1,20 +1,27 @@
 package org.example.controllers;
 
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import lombok.Getter;
 
 import java.util.function.Consumer;
 
 public class RepeatingTimer {
 
     private final AnimationTimer timer;
-    private boolean running = false;
+    @Getter
+    private final BooleanProperty running = new SimpleBooleanProperty(false);
     private long lastTime = 0;
 
     public RepeatingTimer(Consumer<Double> action) {
+        running.addListener((ignored) -> {
+            lastTime = 0;
+        });
         this.timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (!running) return;
+                if (!running.get()) return;
 
                 if (lastTime == 0) {
                     lastTime = now;
@@ -30,17 +37,19 @@ public class RepeatingTimer {
     }
 
     public void start() {
-        running = true;
-        lastTime = 0;
+        run();
         timer.start();
     }
 
     public void stop() {
-        running = false;
+        pause();
         timer.stop();
     }
 
     public void pause() {
-        running = false;
+        running.set(false);
+    }
+    public void run(){
+        running.set(true);
     }
 }

@@ -2,9 +2,35 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.HBox?>
 
-<VBox prefHeight="824.0" prefWidth="1280.0" xmlns:fx="http://javafx.com/fxml/1"
-      xmlns="http://javafx.com/javafx/25" fx:controller="org.example.controllers.AnimationController">
+<StackPane prefHeight="824.0" prefWidth="1280.0"
+           xmlns:fx="http://javafx.com/fxml/1"
+           xmlns="http://javafx.com/javafx/25"
+           fx:controller="org.example.controllers.AnimationController">
+
+    <!-- Канва -->
     <Canvas fx:id="canvas" height="824.0" width="1280.0"/>
-</VBox>
+
+    <!-- Кнопки -->
+    <HBox spacing="10" alignment="TOP_LEFT">
+        <padding>
+            <Insets top="10" left="10"/>
+        </padding>
+
+        <Button fx:id="pauseButton"
+                text="Пауза"
+                onAction="#handlePause"/>
+
+        <Button fx:id="saveTxt"
+                text="Сохранить TXT"
+                onAction="#handleSaveText"/>
+
+        <Button fx:id="saveJson"
+                text="Сохранить JSON"
+                onAction="#handleSaveJson"/>
+    </HBox>
+
+</StackPane>

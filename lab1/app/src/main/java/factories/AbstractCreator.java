@@ -5,7 +5,6 @@ import configs.Config;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import lombok.RequiredArgsConstructor;
-import org.example.alert.AlertUtil;
 import org.example.controllers.VehicleCreateController;
 import org.example.forms.FormResult;
 import org.example.models.SceneModel;
@@ -18,10 +17,13 @@ public abstract class AbstractCreator <C extends Config> implements VehicleCreat
     protected final ApplicationContext context;
     protected final SceneModel scene;
     public abstract Class<C> getConfigType();
-    public Animatable create(C config){
-        return createObject(config);
+    public abstract Animatable<C> create(C config);
+    public Animatable<C> rebuild(C config){
+        Animatable<C> res = create(config);
+        if (config.isRebuild())
+            res.rebuild(config);
+        return res;
     }
-    protected abstract Animatable createObject(C config);
     public FormResult<C> createForm() throws IOException{
         return createForm("/org/example/app/" + getDisplayText().toLowerCase() + "-create.fxml");
     }

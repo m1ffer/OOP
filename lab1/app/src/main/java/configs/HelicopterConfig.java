@@ -6,7 +6,10 @@ import classes.SceneObject;
 public record HelicopterConfig(int peopleCount,
                                int loadWeight,
                                double lowerBound,
-                               double upperBound) implements Config {
+                               double upperBound,
+                               Double x,
+                               Double y,
+                               Double elapsedTime) implements Config {
     public HelicopterConfig{
         SceneObject.validateMax(peopleCount, Helicopter.MAX_PEOPLE_COUNT,
                 "Превышено максимальное количество людей (" + Helicopter.MAX_PEOPLE_COUNT + ")");
@@ -22,5 +25,16 @@ public record HelicopterConfig(int peopleCount,
                 "Ордината нижней границы должна быть положительной");
         SceneObject.validatePositive(lowerBound - upperBound - Helicopter.HEIGHT,
                 "Разница между нижней и верхней границей должна составлять хотя бы " + Helicopter.HEIGHT);
+    }
+    public HelicopterConfig(int peopleCount,
+                            int loadWeight,
+                            double lowerBound,
+                            double upperBound){
+        this(peopleCount, loadWeight,
+                lowerBound, upperBound,
+                null, null, null);
+    }
+    public boolean isRebuild(){
+        return x != null;
     }
 }

@@ -5,7 +5,10 @@ import classes.SceneObject;
 
 public record PlaneConfig(int peopleCount,
                           int loadWeight,
-                          double startY) implements Config {
+                          double startY,
+                          Double x,
+                          Double y,
+                          Double elapsedTime) implements Config {
     public PlaneConfig{
         SceneObject.validateMax(peopleCount, Plane.MAX_PEOPLE_COUNT,
                 "Превышено максимальное количество людей (" + Plane.MAX_PEOPLE_COUNT + ")");
@@ -17,5 +20,14 @@ public record PlaneConfig(int peopleCount,
                 "Вес не может быть отрицательным");
         SceneObject.validatePositive(startY - Plane.HEIGHT,
                 "Самолет не может лететь так высоко");
+    }
+    public PlaneConfig(int peopleCount,
+                       int loadWeight,
+                       double startY){
+        this(peopleCount, loadWeight, startY,
+                null, null, null);
+    }
+    public boolean isRebuild(){
+        return x != null;
     }
 }

@@ -5,7 +5,6 @@ import classes.Helicopter;
 import classes.SceneObject;
 import configs.HelicopterConfig;
 import lombok.Getter;
-import org.example.forms.FormResult;
 import org.example.models.SceneModel;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -22,7 +21,7 @@ public class HelicopterCreator extends AbstractCreator<HelicopterConfig> {
     private final String displayText = "Helicopter";
 
     @Override
-    public Animatable createObject(HelicopterConfig config) {
+    public Animatable<HelicopterConfig> create(HelicopterConfig config) {
         SceneObject.validateMaxEquals(config.lowerBound(), scene.getGroundLevel(),
                 "Вертолёт не может лететь так низко");
         return new Helicopter(scene.getCanvasWidth(),

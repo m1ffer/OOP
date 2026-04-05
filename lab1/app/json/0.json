@@ -1,0 +1,9 @@
+{
+  "type" : "Plane",
+  "peopleCount" : 1,
+  "loadWeight" : 1,
+  "startY" : 500.0,
+  "x" : null,
+  "y" : null,
+  "elapsedTime" : null
+}

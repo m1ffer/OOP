@@ -22,7 +22,7 @@ public class PlaneCreator extends AbstractCreator<PlaneConfig>{
     private final String displayText = "Plane";
 
     @Override
-    public Animatable createObject(PlaneConfig config) {
+    public Animatable<PlaneConfig> create(PlaneConfig config) {
         SceneObject.validateMaxEquals(config.startY() + Plane.HEIGHT, scene.getGroundLevel(),
                 "Самолет не может лететь так низко");
         return new Plane(scene.getCanvasWidth(),

@@ -7,10 +7,7 @@ import org.example.models.SceneModel;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HelicopterCreateController extends AbstractCreateController<HelicopterConfig> {
-    public HelicopterCreateController(SceneModel scene) {
-        super(scene);
-    }
+public class HelicopterCreateController implements VehicleCreateController<HelicopterConfig> {
 
     @FXML
     private TextField peopleCount;
@@ -22,7 +19,7 @@ public class HelicopterCreateController extends AbstractCreateController<Helicop
     private TextField upperBound;
 
     @Override
-    protected HelicopterConfig buildConfigObject() {
+    public HelicopterConfig buildConfig() {
         return new HelicopterConfig(Integer.parseInt(peopleCount.getText()),
                                     Integer.parseInt(loadWeight.getText()),
                                     Double.parseDouble(lowerBound.getText()),

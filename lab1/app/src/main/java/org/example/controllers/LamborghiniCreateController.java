@@ -7,17 +7,14 @@ import org.example.models.SceneModel;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LamborghiniCreateController extends AbstractCreateController<LamborghiniConfig> {
-    public LamborghiniCreateController(SceneModel scene) {
-        super(scene);
-    }
+public class LamborghiniCreateController implements VehicleCreateController<LamborghiniConfig> {
     @FXML
     private TextField peopleCount;
     @FXML
     private TextField loadWeight;
 
     @Override
-    public LamborghiniConfig buildConfigObject() {
+    public LamborghiniConfig buildConfig() {
         return new LamborghiniConfig(Integer.parseInt(peopleCount.getText()),
                                      Integer.parseInt(loadWeight.getText()));
     }

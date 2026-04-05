@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public interface VehicleCreator <C extends Config> extends HasDisplayText {
     Class<C> getConfigType();
-    Animatable create(C config);
+    Animatable<C> create(C config);
+    Animatable<C> rebuild(C config);
     FormResult<C> createForm() throws IOException;
 }

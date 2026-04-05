@@ -26,7 +26,7 @@ public class Application extends javafx.application.Application {
     }
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/org/example/app/creation-window.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/org/example/app/start.fxml"));
         fxmlLoader.setControllerFactory(context::getBean);
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("app");

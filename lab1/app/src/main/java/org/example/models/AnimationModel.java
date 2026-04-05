@@ -12,18 +12,21 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.example.alert.AlertUtil;
 import org.springframework.stereotype.Component;
+import serialization.SerializationModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class AnimationModel {
     private final List<Config> configs = new ArrayList<>();
-    private final List<Animatable> vehicles = new ArrayList<>();
+    private final List<Animatable<? extends Config>> vehicles = new ArrayList<>();
     private final VehicleFactory factory;
     private final SceneModel scene;
-    private Animatable vehicle = null;
+    private final SerializationModel serialization;
+    private Animatable<? extends Config> vehicle = null;
     private boolean hasAppeared = false;
     @Setter
     private GraphicsContext gc;
@@ -56,8 +59,16 @@ public class AnimationModel {
     public void addVehicle(Config config){
         configs.add(config);
     }
+    public void addVehicles(Config... configs){
+        this.configs.addAll(Arrays.asList(configs));
+    }
+    public void addVehicles(List<Config> configs){
+        this.configs.addAll(configs);
+    }
     public void initVehicles(){
         if (!configs.isEmpty()) {
+            Config first = configs.removeFirst();
+            vehicles.add(factory.rebuild(first));
             configs.forEach(i -> {
                 try {
                     vehicles.add(factory.create(i));
@@ -88,5 +99,60 @@ public class AnimationModel {
     }
     public void draw(){
         vehicle.draw(gc);
+    }
+
+    public void saveTxt(){
+        try {
+            if (haveVehicles()) {
+                saveVehiclesTxt();
+                AlertUtil.setProperty(scene.getInfo(),
+                        "Сохранено");
+            }
+            else if (!configs.isEmpty()) {
+                saveConfigsTxt();
+                AlertUtil.setProperty(scene.getInfo(),
+                        "Сохранено");
+            }
+            else
+                AlertUtil.setProperty(scene.getError(),
+                        "Нет транспорта для сохранения");
+        }
+        catch(Throwable e){
+            AlertUtil.setProperty(scene.getError(), e.getMessage());
+        }
+    }
+
+    public void saveJson(){
+        try {
+            if (haveVehicles()) {
+                saveVehiclesJson();
+                AlertUtil.setProperty(scene.getInfo(),
+                        "Сохранено");
+            }
+            else if (!configs.isEmpty()) {
+                saveConfigsJson();
+                AlertUtil.setProperty(scene.getInfo(),
+                        "Сохранено");
+            }
+            else
+                AlertUtil.setProperty(scene.getError(),
+                        "Нет транспорта для сохранения");
+        }
+        catch(Throwable e){
+            AlertUtil.setProperty(scene.getError(), e.getMessage());
+        }
+    }
+
+    private void saveVehiclesTxt(){
+        serialization.saveVehiclesTxt(vehicles, vehicle);
+    }
+    private void saveConfigsTxt(){
+        serialization.saveConfigsTxt(configs);
+    }
+    private void saveVehiclesJson(){
+        serialization.saveVehiclesJson(vehicles, vehicle);
+    }
+    private void saveConfigsJson(){
+        serialization.saveConfigsJson(configs);
     }
 }

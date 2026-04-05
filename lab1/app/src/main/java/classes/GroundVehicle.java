@@ -21,7 +21,7 @@ abstract public class GroundVehicle extends Vehicle {
     /**
      * Возможные состояния наземного транспорта.
      */
-    protected enum GroundState {
+    public enum GroundState {
 
         /** Движение с постоянной скоростью. */
         MOVING_CONSTANT,
@@ -220,6 +220,14 @@ abstract public class GroundVehicle extends Vehicle {
     @Override
     public boolean isStopped(){
         return state == GroundState.STOPPED;
+    }
+
+    protected void rebuild(double x, double y, double elapsedTime,
+                           GroundState state, double currentSpeedFactor, double acceleration){
+        super.rebuild(x, y, elapsedTime);
+        this.state = state;
+        this.currentSpeedFactor = currentSpeedFactor;
+        this.acceleration = acceleration;
     }
 
     // =======================
